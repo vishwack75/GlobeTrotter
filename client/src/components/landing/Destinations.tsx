@@ -3,8 +3,52 @@ import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 import { useGetCitiesQuery } from "../../store/api/apiSlice";
 
+import kedarnathImg from "../../assets/images/kedarnath.webp";
+import dwarkaImg from "../../assets/images/dwarka.avif";
+import varanasiImg from "../../assets/images/varanasi.avif";
+import ujjainImg from "../../assets/images/ujjain.avif";
+const FALLBACK_DESTINATIONS = [
+  {
+    _id: "1",
+    name: "Kedarnath",
+    country: "India",
+    region: "Uttarakhand",
+    popularity: 4.98,
+    imageUrl: kedarnathImg,
+    description: "Sacred shrine located high in the snow-capped Himalayan peaks."
+  },
+  {
+    _id: "2",
+    name: "Dwarka",
+    country: "India",
+    region: "Gujarat",
+    popularity: 4.92,
+    imageUrl: dwarkaImg,
+    description: "Ancient kingdom city of Lord Krishna along the Arabian Sea."
+  },
+  {
+    _id: "3",
+    name: "Varanasi",
+    country: "India",
+    region: "Uttar Pradesh",
+    popularity: 4.95,
+    imageUrl: varanasiImg,
+    description: "The spiritual heart of India along the sacred Ganges river."
+  },
+  {
+    _id: "4",
+    name: "Ujjain",
+    country: "India",
+    region: "Madhya Pradesh",
+    popularity: 4.9,
+    imageUrl: ujjainImg,
+    description: "Holy city of Mahakaleshwar Jyotirlinga and sacred Shipra river."
+  }
+];
+
 export const Destinations: React.FC = () => {
-  const { data: cities } = useGetCitiesQuery({ limit: 6 });
+  const { data: fetchedCities } = useGetCitiesQuery({ limit: 6 });
+  const displayCities = (fetchedCities && fetchedCities.length > 0) ? fetchedCities : FALLBACK_DESTINATIONS;
 
   return (
     <section id="explore" className="py-16 bg-white">
@@ -19,16 +63,19 @@ export const Destinations: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cities?.map((city: any) => (
+          {displayCities.map((city: any) => (
             <div
               key={city._id}
-              className="bg-white rounded-3xl border border-slate-200 overflow-hidden group flex flex-col justify-between hover:border-[#02639B] transition-colors"
+              className="bg-white rounded-3xl border border-slate-200 overflow-hidden group flex flex-col justify-between hover:border-[#02639B] transition-colors shadow-xs"
             >
               <div className="h-56 relative bg-slate-100 overflow-hidden">
                 <img
-                  src={city.imageUrl}
+                  src={city.imageUrl || kedarnathImg}
                   alt={city.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = kedarnathImg;
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
                 <div className="absolute top-4 right-4 px-2.5 py-1 bg-white/90 rounded-xl text-amber-600 font-extrabold text-xs flex items-center space-x-1">
