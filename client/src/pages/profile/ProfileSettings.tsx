@@ -151,7 +151,7 @@ export const ProfileSettings: React.FC = () => {
                   <div className="pt-2">
                     <Link
                       to={`/trips/${t._id}`}
-                      className="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl inline-block"
+                      className="px-4 py-1.5 bg-[#02639B] hover:bg-[#024E7B] text-white text-xs font-bold rounded-xl inline-block"
                     >
                       View
                     </Link>

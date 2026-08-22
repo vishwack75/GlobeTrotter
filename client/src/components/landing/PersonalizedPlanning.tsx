@@ -16,10 +16,10 @@ export const PersonalizedPlanning: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 bg-slate-50 border-t border-slate-200">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100 min-h-87.5">
+          <div className="rounded-3xl overflow-hidden bg-slate-100 min-h-87.5">
             {cityImage && (
               <img
                 src={cityImage}
@@ -49,7 +49,7 @@ export const PersonalizedPlanning: React.FC = () => {
             <div className="pt-4">
               <Link
                 to="/signup"
-                className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-full shadow-lg shadow-blue-600/20 inline-flex items-center space-x-2 transition-all hover:scale-105"
+                className="px-8 py-3.5 bg-[#02639B] hover:bg-[#024E7B] text-white font-extrabold text-xs rounded-full inline-flex items-center space-x-2 transition-all hover:scale-105"
               >
                 <span>Build My Trip</span>
                 <ArrowRight className="w-4 h-4" />

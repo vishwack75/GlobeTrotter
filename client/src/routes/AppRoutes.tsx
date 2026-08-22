@@ -21,6 +21,9 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 import CalendarView from "../pages/calendar/CalendarView";
 import CommunityFeed from "../pages/community/CommunityFeed";
 
+import PrivacyPolicy from "../pages/legal/PrivacyPolicy";
+import TermsOfService from "../pages/legal/TermsOfService";
+
 import ProtectedRoute from "./ProtectedRoute";
 import AdminRoute from "./AdminRoute";
 
@@ -31,6 +34,9 @@ export const AppRoutes: React.FC = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<TermsOfService />} />
 
       <Route
         path="/dashboard"
