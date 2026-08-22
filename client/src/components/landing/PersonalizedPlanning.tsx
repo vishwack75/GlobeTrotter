@@ -1,0 +1,59 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { CheckCircle2, ArrowRight } from "lucide-react";
+
+export const PersonalizedPlanning: React.FC = () => {
+  const checklist = [
+    "Choose your travel style & pace",
+    "Add your favorite curated activities",
+    "Organize multiple Indian & global cities",
+    "Set your exact travel budget targets",
+    "Reorder your daily itinerary anytime",
+  ];
+
+  return (
+    <section className="py-20 bg-slate-50 border-t border-slate-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100">
+            <img
+              src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1000&q=80"
+              alt="Kerala Houseboat Travel"
+              className="w-full h-100 object-cover"
+            />
+          </div>
+
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Your Trip Should Feel Like You.
+            </h2>
+            <p className="text-slate-600 text-sm font-medium leading-relaxed">
+              Whether you're chasing Himalayan adventures, relaxing in Kerala backwaters, exploring royal forts, or discovering local food markets, GlobeTrotter helps you build a journey around what matters to you.
+            </p>
+
+            <div className="space-y-3 pt-2">
+              {checklist.map((item, idx) => (
+                <div key={idx} className="flex items-center space-x-3 text-xs font-extrabold text-slate-800">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-4">
+              <Link
+                to="/signup"
+                className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-full shadow-lg shadow-blue-600/20 inline-flex items-center space-x-2 transition-all hover:scale-105"
+              >
+                <span>Build My Trip</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default PersonalizedPlanning;

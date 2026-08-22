@@ -104,7 +104,7 @@ export const AdminDashboard: React.FC = () => {
                 <div className="w-full bg-indigo-300 rounded-t h-[65%]" />
                 <div className="w-full bg-indigo-400 rounded-t h-[50%]" />
                 <div className="w-full bg-indigo-500 rounded-t h-[85%]" />
-                <div className="w-full bg-indigo-600 rounded-t h-[100%]" />
+                <div className="w-full bg-indigo-600 rounded-t h-full" />
               </div>
               <p className="text-[11px] text-center text-slate-500 font-medium">Monthly Active Travelers Growth Trend</p>
             </div>
