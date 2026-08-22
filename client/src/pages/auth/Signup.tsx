@@ -6,6 +6,7 @@ import "react-phone-input-2/lib/style.css";
 import { useSignupMutation } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
 import registerSidebarImg from "../../assets/images/register_sidebar.avif";
+import { isValidPassword } from "../../utils/validation";
 
 const PhoneInput: any = (ReactPhoneInput as any).default || ReactPhoneInput;
 
@@ -41,7 +42,7 @@ export const Signup: React.FC = () => {
   const isPhoneValid = phone.trim().length >= 5;
   const isCityValid = city.trim().length >= 1;
   const isCountryValid = country.trim().length >= 1;
-  const isPasswordValid = password.length >= 6;
+  const isPasswordValid = isValidPassword(password);
 
   const isFormValid =
     isFirstNameValid &&
@@ -129,7 +130,7 @@ export const Signup: React.FC = () => {
       return;
     }
     if (!isPasswordValid) {
-      showToast("Password must be at least 6 characters long.", "error");
+      showToast("Password must be at least 6 characters and contain uppercase, lowercase, number & symbol.", "error");
       return;
     }
 
@@ -403,9 +404,9 @@ export const Signup: React.FC = () => {
                 </button>
               </div>
               {touchedPassword && !isPasswordValid && (
-                <p className="text-[10px] font-bold text-rose-500 mt-1 flex items-center">
-                  <AlertCircle className="w-3 h-3 inline mr-1 text-rose-500 shrink-0" />
-                  <span>Password must be at least 6 characters long</span>
+                <p className="text-[10px] font-bold text-rose-500 mt-1 flex items-center leading-tight">
+                  <AlertCircle className="w-3.5 h-3.5 inline mr-1 text-rose-500 shrink-0" />
+                  <span>Must be ≥6 chars with 1 uppercase, 1 lowercase, 1 number & 1 special symbol</span>
                 </p>
               )}
             </div>
