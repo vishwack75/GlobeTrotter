@@ -15,7 +15,7 @@ export const ActivitySearchPage: React.FC = () => {
     <PageLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Activity Search Page (Screen 8)</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Explore Activities</h1>
           <p className="text-slate-500 text-xs mt-1">Explore options and details for activities, tours, and sightseeing</p>
         </div>
 

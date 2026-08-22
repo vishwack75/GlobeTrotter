@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
 import { Copy, MapPin, Calendar } from "lucide-react";
 import { useGetPublicTripQuery, useCopyTripMutation } from "../../store/api/apiSlice";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +28,7 @@ export const CommunityFeed: React.FC = () => {
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Community Tab Screen (Screen 10)</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Community Itineraries</h1>
           <p className="text-slate-500 text-xs mt-1">Discover, share, and copy community itineraries created by fellow global travelers</p>
         </div>
 
@@ -40,7 +39,7 @@ export const CommunityFeed: React.FC = () => {
             <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-full bg-indigo-100 border border-indigo-200 text-indigo-700 font-extrabold flex items-center justify-center text-lg">
+                  <div className="w-12 h-12 rounded-full bg-sky-100 border border-sky-200 text-[#02639B] font-extrabold flex items-center justify-center text-lg">
                     GR
                   </div>
                   <div>
@@ -52,7 +51,7 @@ export const CommunityFeed: React.FC = () => {
                 <button
                   onClick={handleCopy}
                   disabled={copying}
-                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl flex items-center space-x-2 shadow-md"
+                  className="px-5 py-2.5 bg-[#02639B] hover:bg-[#024E7B] text-white font-extrabold text-xs rounded-xl flex items-center space-x-2 shadow-md cursor-pointer"
                 >
                   <Copy className="w-4 h-4" />
                   <span>{copying ? "Copying..." : "Copy Trip"}</span>
@@ -63,7 +62,7 @@ export const CommunityFeed: React.FC = () => {
 
               <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-6 text-xs text-slate-500 font-medium">
                 <div className="flex items-center space-x-1.5">
-                  <Calendar className="w-4 h-4 text-indigo-600" />
+                  <Calendar className="w-4 h-4 text-[#02639B]" />
                   <span>{new Date(featuredTrip.startDate).toLocaleDateString()} - {new Date(featuredTrip.endDate).toLocaleDateString()}</span>
                 </div>
                 <div className="flex items-center space-x-1.5">
@@ -87,7 +86,7 @@ export const CommunityFeed: React.FC = () => {
                       {stop.activities?.map((act: any) => (
                         <div key={act._id} className="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
                           <span className="font-semibold text-slate-700">{act.activityId?.title || act.customTitle}</span>
-                          <span className="font-bold text-emerald-600">${act.cost}</span>
+                          <span className="font-bold text-emerald-600">₹{act.cost}</span>
                         </div>
                       ))}
                     </div>
@@ -102,8 +101,6 @@ export const CommunityFeed: React.FC = () => {
           </div>
         )}
       </main>
-
-      <Footer />
     </div>
   );
 };

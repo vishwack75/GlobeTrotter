@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
 import { Users, Map, Compass, Trash2, Activity as ActivityIcon, BarChart3, TrendingUp } from "lucide-react";
 import {
   useGetAdminAnalyticsQuery,
@@ -186,8 +185,6 @@ export const AdminDashboard: React.FC = () => {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

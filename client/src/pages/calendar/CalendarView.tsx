@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useGetTripsQuery } from "../../store/api/apiSlice";
 import { Link } from "react-router-dom";
@@ -17,7 +16,7 @@ export const CalendarView: React.FC = () => {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Calendar View Screen (Screen 11)</h1>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Travel Calendar</h1>
             <p className="text-slate-500 text-xs mt-1">Visualize your itinerary dates and schedules across months</p>
           </div>
 
@@ -60,7 +59,7 @@ export const CalendarView: React.FC = () => {
                           <Link
                             key={t._id}
                             to={`/trips/${t._id}`}
-                            className="block p-1 bg-indigo-600 text-white text-[10px] font-bold rounded-lg truncate shadow-sm hover:bg-indigo-700"
+                            className="block p-1 bg-[#02639B] text-white text-[10px] font-bold rounded-lg truncate shadow-sm hover:bg-[#024E7B]"
                             title={t.name}
                           >
                             {t.name}
@@ -75,8 +74,6 @@ export const CalendarView: React.FC = () => {
           </div>
         )}
       </main>
-
-      <Footer />
     </div>
   );
 };
