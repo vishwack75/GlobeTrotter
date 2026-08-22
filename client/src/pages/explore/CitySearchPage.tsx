@@ -23,6 +23,19 @@ export const CitySearchPage: React.FC = () => {
     }
   };
 
+  const getCostLabel = (costIndex?: number) => {
+    const idx = costIndex && costIndex >= 1 ? Math.min(costIndex, 5) : 2;
+    const symbols = "$".repeat(idx);
+    const labels: Record<number, string> = {
+      1: "Budget",
+      2: "Moderate",
+      3: "Mid-Range",
+      4: "Premium",
+      5: "Luxury",
+    };
+    return `${symbols} (${labels[idx] || "Standard"})`;
+  };
+
   return (
     <PageLayout>
       <div className="space-y-6">
@@ -44,13 +57,13 @@ export const CitySearchPage: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-2">
-            <button className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200">
+            <button className="px-4 py-2 bg-[#02639B] hover:bg-[#024E7B] text-white text-xs font-bold rounded-xl shadow-xs">
               Group by
             </button>
-            <button className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200">
+            <button className="px-4 py-2 bg-[#02639B] hover:bg-[#024E7B] text-white text-xs font-bold rounded-xl shadow-xs">
               Filter
             </button>
-            <button className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200">
+            <button className="px-4 py-2 bg-[#02639B] hover:bg-[#024E7B] text-white text-xs font-bold rounded-xl shadow-xs">
               Sort by...
             </button>
           </div>
@@ -82,13 +95,15 @@ export const CitySearchPage: React.FC = () => {
                         <Star className="w-3.5 h-3.5 fill-amber-400" />
                         <span>{city.popularity}</span>
                       </div>
-                      <div className="text-slate-400 mt-1">Cost Index: {"$".repeat(city.costIndex)}</div>
+                      <div className="text-slate-500 mt-1 font-semibold">
+                        Cost Index: <strong className="text-slate-800">{getCostLabel(city.costIndex)}</strong>
+                      </div>
                     </div>
                     <button
                       onClick={() => handleToggleSave(city._id)}
-                      className="p-2.5 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-2xl border border-slate-200"
+                      className="p-2.5 bg-[#02639B] hover:bg-[#024E7B] text-white rounded-2xl border border-sky-700 shadow-xs"
                     >
-                      <Heart className="w-4 h-4" />
+                      <Heart className="w-4 h-4 text-white" />
                     </button>
                   </div>
                 </div>

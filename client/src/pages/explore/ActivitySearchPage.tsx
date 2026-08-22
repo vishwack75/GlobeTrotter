@@ -32,13 +32,13 @@ export const ActivitySearchPage: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-2">
-            <button className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200">
+            <button className="px-4 py-2 bg-[#02639B] hover:bg-[#024E7B] text-white text-xs font-bold rounded-xl shadow-xs">
               Group by
             </button>
-            <button className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200">
+            <button className="px-4 py-2 bg-[#02639B] hover:bg-[#024E7B] text-white text-xs font-bold rounded-xl shadow-xs">
               Filter
             </button>
-            <button className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200">
+            <button className="px-4 py-2 bg-[#02639B] hover:bg-[#024E7B] text-white text-xs font-bold rounded-xl shadow-xs">
               Sort by...
             </button>
           </div>
@@ -73,7 +73,7 @@ export const ActivitySearchPage: React.FC = () => {
                       <Clock className="w-4 h-4 text-[#02639B]" />
                       <span>{act.duration} mins</span>
                     </div>
-                    <span className="text-emerald-600 font-extrabold text-base">${act.cost}</span>
+                    <span className="text-emerald-600 font-extrabold text-base">₹{act.cost}</span>
                   </div>
                 </div>
               ))}

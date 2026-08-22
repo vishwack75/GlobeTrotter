@@ -1,37 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Star, ArrowRight } from "lucide-react";
+import { Star } from "lucide-react";
 import { useGetCitiesQuery } from "../../store/api/apiSlice";
 
 export const Destinations: React.FC = () => {
   const { data: cities } = useGetCitiesQuery({ limit: 6 });
 
   return (
-    <section id="explore" className="py-20 bg-white border-t border-slate-200">
+    <section id="explore" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
-          <div className="space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Where Will You Go Next?
-            </h2>
-            <p className="text-slate-600 text-sm font-medium">
-              Explore curated Indian and global destinations with popularity ratings & cost indexes.
-            </p>
-          </div>
-          <Link
-            to="/explore/cities"
-            className="text-xs font-black text-blue-600 hover:text-blue-700 flex items-center space-x-1"
-          >
-            <span>Explore All Places</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+        <div className="space-y-3 text-center max-w-2xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            Where Will You Go Next?
+          </h2>
+          <p className="text-slate-600 text-sm font-medium">
+            Explore curated sacred Indian temples and cultural destinations.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {cities?.map((city: any) => (
             <div
               key={city._id}
-              className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col justify-between"
+              className="bg-white rounded-3xl border border-slate-200 overflow-hidden group flex flex-col justify-between hover:border-[#02639B] transition-colors"
             >
               <div className="h-56 relative bg-slate-100 overflow-hidden">
                 <img
@@ -39,8 +30,8 @@ export const Destinations: React.FC = () => {
                   alt={city.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-transparent to-transparent" />
-                <div className="absolute top-4 right-4 px-2.5 py-1 bg-white/90 backdrop-blur-md rounded-xl text-amber-600 font-extrabold text-xs flex items-center space-x-1 shadow-sm">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+                <div className="absolute top-4 right-4 px-2.5 py-1 bg-white/90 rounded-xl text-amber-600 font-extrabold text-xs flex items-center space-x-1">
                   <Star className="w-3.5 h-3.5 fill-amber-400" />
                   <span>{city.popularity}</span>
                 </div>
@@ -52,11 +43,10 @@ export const Destinations: React.FC = () => {
 
               <div className="p-6 space-y-4">
                 <p className="text-xs text-slate-600 line-clamp-2 font-medium">{city.description}</p>
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-slate-500 font-semibold">Cost Index: {"$".repeat(city.costIndex)}</span>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-end text-xs">
                   <Link
                     to="/signup"
-                    className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold rounded-xl transition-colors"
+                    className="px-6 py-2.5 bg-[#02639B] hover:bg-[#024E7B] text-white font-extrabold text-xs rounded-full transition-colors"
                   >
                     Add to Trip
                   </Link>

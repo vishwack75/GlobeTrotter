@@ -38,7 +38,7 @@ export const Sidebar: React.FC = () => {
   return (
     <aside className="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col justify-between p-6 min-h-screen sticky top-0 shadow-sm shrink-0 font-sans">
       <div className="space-y-6">
-        {/* Header matching Excalidraw mockup */}
+        {/* Header matching Excalidraw mockup with colorful blue combo text */}
         <div className="flex items-center space-x-3 px-1">
           {profile?.avatarUrl ? (
             <img
@@ -47,17 +47,19 @@ export const Sidebar: React.FC = () => {
               className="w-10 h-10 rounded-full object-cover border border-slate-200 shadow-sm"
             />
           ) : (
-            <div className="w-10 h-10 rounded-full bg-sky-100 border border-sky-200 flex items-center justify-center text-sky-800 font-extrabold text-sm">
+            <div className="w-10 h-10 rounded-full bg-sky-100 border border-sky-200 flex items-center justify-center text-[#02639B] font-extrabold text-sm">
               {profile?.name ? profile.name.charAt(0) : "G"}
             </div>
           )}
           <div className="truncate">
-            <h2 className="text-base font-extrabold text-[#0B3B60] leading-tight truncate">GlobeTrotter</h2>
+            <h2 className="text-base font-black bg-gradient-to-r from-[#02639B] via-sky-500 to-indigo-600 bg-clip-text text-transparent leading-tight truncate">
+              GlobeTrotter
+            </h2>
             <p className="text-[10px] font-bold text-sky-600 tracking-tight">Premium Explorer</p>
           </div>
         </div>
 
-        {/* + New Trip Pill Button matching Excalidraw mockup */}
+        {/* + New Trip Pill Button */}
         <div className="pt-1">
           <Link
             to="/trips/create"
@@ -68,7 +70,7 @@ export const Sidebar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Nav list matching Excalidraw mockup pill indicator */}
+        {/* Nav list with right capsule active indicator */}
         <nav className="space-y-2 pt-2">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -95,7 +97,7 @@ export const Sidebar: React.FC = () => {
         </nav>
       </div>
 
-      {/* Bottom links matching Excalidraw mockup */}
+      {/* Bottom links */}
       <div className="pt-6 border-t border-slate-100 space-y-1">
         <Link
           to="/profile"

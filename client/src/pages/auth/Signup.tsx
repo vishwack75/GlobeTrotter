@@ -157,7 +157,7 @@ export const Signup: React.FC = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 focus:outline-none"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                 </button>
               </div>
               {touchedPassword && !isPasswordValid && (
@@ -192,7 +192,7 @@ export const Signup: React.FC = () => {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 focus:outline-none"
                 >
-                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showConfirmPassword ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                 </button>
               </div>
               {touchedConfirmPassword && !isConfirmPasswordValid && (
