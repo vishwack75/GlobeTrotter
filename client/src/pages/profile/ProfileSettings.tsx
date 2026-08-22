@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
-import { Save } from "lucide-react";
+import { Save, User as UserIcon } from "lucide-react";
 import { useGetProfileQuery, useUpdateProfileMutation, useGetTripsQuery } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
 import { Link } from "react-router-dom";
@@ -50,11 +50,17 @@ export const ProfileSettings: React.FC = () => {
 
         <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl space-y-6">
           <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 pb-6 border-b border-slate-100">
-            <img
-              src={avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"}
-              alt={name}
-              className="w-24 h-24 rounded-full object-cover border-4 border-indigo-100 shadow-inner"
-            />
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt={name}
+                className="w-24 h-24 rounded-full object-cover border-4 border-indigo-100 shadow-inner"
+              />
+            ) : (
+              <div className="w-24 h-24 rounded-full bg-indigo-50 border-4 border-indigo-100 flex items-center justify-center text-indigo-600">
+                <UserIcon className="w-10 h-10" />
+              </div>
+            )}
             <div className="text-center sm:text-left space-y-1">
               <h2 className="text-2xl font-extrabold text-slate-900">{profile?.name}</h2>
               <p className="text-xs font-semibold text-slate-500">{profile?.email}</p>

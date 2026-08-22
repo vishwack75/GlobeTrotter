@@ -19,6 +19,8 @@ export const Dashboard: React.FC = () => {
     t.name.toLowerCase().includes(debouncedSearch.toLowerCase())
   );
 
+  const bannerCity = popularCities?.[0];
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
@@ -37,13 +39,15 @@ export const Dashboard: React.FC = () => {
             </p>
           </div>
 
-          <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden md:block opacity-30 mix-blend-overlay">
-            <img
-              src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80"
-              alt="Banner Image"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          {bannerCity && (
+            <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden md:block opacity-30 mix-blend-overlay">
+              <img
+                src={bannerCity.imageUrl}
+                alt="Banner Image"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
         </div>
 
         <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
@@ -119,13 +123,15 @@ export const Dashboard: React.FC = () => {
                   className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all space-y-4 group flex flex-col justify-between"
                 >
                   <div className="space-y-2">
-                    <div className="h-36 rounded-2xl overflow-hidden bg-slate-100 relative">
-                      <img
-                        src={trip.coverPhoto || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80"}
-                        alt={trip.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
+                    {trip.coverPhoto && (
+                      <div className="h-36 rounded-2xl overflow-hidden bg-slate-100 relative">
+                        <img
+                          src={trip.coverPhoto}
+                          alt={trip.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
                       {trip.name}
                     </h3>

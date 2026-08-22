@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle2, ArrowRight } from "lucide-react";
+import { useGetCitiesQuery } from "../../store/api/apiSlice";
 
 export const PersonalizedPlanning: React.FC = () => {
+  const { data: cities } = useGetCitiesQuery({ limit: 4 });
+  const cityImage = cities?.[3]?.imageUrl || cities?.[0]?.imageUrl;
+
   const checklist = [
     "Choose your travel style & pace",
     "Add your favorite curated activities",
@@ -15,12 +19,14 @@ export const PersonalizedPlanning: React.FC = () => {
     <section className="py-20 bg-slate-50 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100">
-            <img
-              src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1000&q=80"
-              alt="Kerala Houseboat Travel"
-              className="w-full h-100 object-cover"
-            />
+          <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100 min-h-[350px]">
+            {cityImage && (
+              <img
+                src={cityImage}
+                alt="Personalized Indian Travel"
+                className="w-full h-[400px] object-cover"
+              />
+            )}
           </div>
 
           <div className="space-y-6">

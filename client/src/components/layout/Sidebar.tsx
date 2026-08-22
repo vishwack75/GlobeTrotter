@@ -5,7 +5,7 @@ import {
   Map,
   Calendar,
   Users,
-  User,
+  User as UserIcon,
   Shield,
   LogOut,
   Globe,
@@ -32,7 +32,7 @@ export const Sidebar: React.FC = () => {
     { label: "Activities", icon: ActivityIcon, path: "/explore/activities" },
     { label: "Calendar", icon: Calendar, path: "/calendar" },
     { label: "Community", icon: Users, path: "/community" },
-    { label: "Profile", icon: User, path: "/profile" },
+    { label: "Profile", icon: UserIcon, path: "/profile" },
   ];
 
   if (profile?.role === "ADMIN") {
@@ -90,11 +90,17 @@ export const Sidebar: React.FC = () => {
       {profile && (
         <div className="pt-4 border-t border-slate-100 space-y-3 px-2">
           <div className="flex items-center space-x-3">
-            <img
-              src={profile.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"}
-              alt={profile.name}
-              className="w-9 h-9 rounded-full object-cover border border-slate-200"
-            />
+            {profile.avatarUrl ? (
+              <img
+                src={profile.avatarUrl}
+                alt={profile.name}
+                className="w-9 h-9 rounded-full object-cover border border-slate-200"
+              />
+            ) : (
+              <div className="w-9 h-9 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600">
+                <UserIcon className="w-4 h-4" />
+              </div>
+            )}
             <div className="flex-1 truncate">
               <p className="text-xs font-extrabold text-slate-900 truncate">{profile.name}</p>
               <p className="text-[10px] text-slate-400 font-semibold truncate">{profile.email}</p>
