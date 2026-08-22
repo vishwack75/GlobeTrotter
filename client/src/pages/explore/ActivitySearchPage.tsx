@@ -73,7 +73,7 @@ export const ActivitySearchPage: React.FC = () => {
                       <Clock className="w-4 h-4 text-[#02639B]" />
                       <span>{act.duration} mins</span>
                     </div>
-                    <span className="text-emerald-600 font-extrabold text-base">${act.cost}</span>
+                    <span className="text-emerald-600 font-extrabold text-base">₹{act.cost}</span>
                   </div>
                 </div>
               ))}

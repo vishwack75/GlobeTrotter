@@ -140,7 +140,7 @@ export const Dashboard: React.FC = () => {
                       <Calendar className="w-3.5 h-3.5 text-[#02639B]" />
                       <span>{new Date(trip.startDate).toLocaleDateString()}</span>
                     </div>
-                    <span className="font-extrabold text-slate-800">${trip.budgetLimit}</span>
+                    <span className="font-extrabold text-slate-800">₹{trip.budgetLimit}</span>
                   </div>
                 </Link>
               ))}

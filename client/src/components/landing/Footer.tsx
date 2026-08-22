@@ -21,7 +21,6 @@ export const Footer: React.FC = () => {
           <div className="space-y-3 text-xs">
             <h4 className="font-extrabold uppercase tracking-wider text-slate-900">Company</h4>
             <ul className="space-y-2 text-slate-500 font-semibold">
-              <li><Link to="/explore/cities" className="hover:text-[#02639B]">Explore Destinations</Link></li>
               <li><Link to="/signup" className="hover:text-[#02639B]">Start Planning</Link></li>
               <li><Link to="/login" className="hover:text-[#02639B]">Account Login</Link></li>
             </ul>

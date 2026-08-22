@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Star, ArrowRight } from "lucide-react";
+import { Star } from "lucide-react";
 import { useGetCitiesQuery } from "../../store/api/apiSlice";
 
 export const Destinations: React.FC = () => {
@@ -9,22 +9,13 @@ export const Destinations: React.FC = () => {
   return (
     <section id="explore" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
-          <div className="space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Where Will You Go Next?
-            </h2>
-            <p className="text-slate-600 text-sm font-medium">
-              Explore curated Indian and global destinations with popularity ratings & cost indexes.
-            </p>
-          </div>
-          <Link
-            to="/explore/cities"
-            className="text-xs font-black text-[#02639B] hover:underline flex items-center space-x-1"
-          >
-            <span>Explore All Places</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+        <div className="space-y-3 text-center max-w-2xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            Where Will You Go Next?
+          </h2>
+          <p className="text-slate-600 text-sm font-medium">
+            Explore curated sacred Indian temples and cultural destinations.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -52,11 +43,10 @@ export const Destinations: React.FC = () => {
 
               <div className="p-6 space-y-4">
                 <p className="text-xs text-slate-600 line-clamp-2 font-medium">{city.description}</p>
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-slate-500 font-semibold">Cost Index: {"$".repeat(city.costIndex)}</span>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-end text-xs">
                   <Link
                     to="/signup"
-                    className="px-4 py-2 bg-[#02639B] hover:bg-[#024E7B] text-white font-extrabold rounded-full transition-colors"
+                    className="px-6 py-2.5 bg-[#02639B] hover:bg-[#024E7B] text-white font-extrabold text-xs rounded-full transition-colors"
                   >
                     Add to Trip
                   </Link>

@@ -73,7 +73,7 @@ export const MyTrips: React.FC = () => {
           <Calendar className="w-4 h-4 text-[#02639B]" />
           <span>{new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}</span>
         </div>
-        <span className="font-extrabold text-slate-800">${trip.budgetLimit}</span>
+        <span className="font-extrabold text-slate-800">₹{trip.budgetLimit}</span>
       </div>
     </div>
   );

@@ -23,6 +23,19 @@ export const CitySearchPage: React.FC = () => {
     }
   };
 
+  const getCostLabel = (costIndex?: number) => {
+    const idx = costIndex && costIndex >= 1 ? Math.min(costIndex, 5) : 2;
+    const symbols = "$".repeat(idx);
+    const labels: Record<number, string> = {
+      1: "Budget",
+      2: "Moderate",
+      3: "Mid-Range",
+      4: "Premium",
+      5: "Luxury",
+    };
+    return `${symbols} (${labels[idx] || "Standard"})`;
+  };
+
   return (
     <PageLayout>
       <div className="space-y-6">
@@ -82,7 +95,9 @@ export const CitySearchPage: React.FC = () => {
                         <Star className="w-3.5 h-3.5 fill-amber-400" />
                         <span>{city.popularity}</span>
                       </div>
-                      <div className="text-slate-400 mt-1">Cost Index: {"$".repeat(city.costIndex)}</div>
+                      <div className="text-slate-500 mt-1 font-semibold">
+                        Cost Index: <strong className="text-slate-800">{getCostLabel(city.costIndex)}</strong>
+                      </div>
                     </div>
                     <button
                       onClick={() => handleToggleSave(city._id)}
