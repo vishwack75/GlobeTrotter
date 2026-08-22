@@ -1,180 +1,150 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User } from "lucide-react";
-import { useSignupMutation } from "../../store/api/apiSlice";
+import { Globe, Lock, Mail, User as UserIcon, ArrowRight } from "lucide-react";
+import { useSignupMutation, useGetCitiesQuery } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
 
 export const Signup: React.FC = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
-  const [additionalInfo, setAdditionalInfo] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [signup, { isLoading }] = useSignupMutation();
   const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [signup, { isLoading }] = useSignupMutation();
   const { showToast } = useToast();
+  const { data: cities } = useGetCitiesQuery({ limit: 2 });
+  const coverImage = cities?.[1]?.imageUrl || cities?.[0]?.imageUrl;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name || !email || !password) {
+      showToast("Please fill in all required fields.", "info");
+      return;
+    }
+
     try {
-      const fullName = `${firstName} ${lastName}`.trim() || email.split("@")[0];
-      await signup({ name: fullName, email, password }).unwrap();
-      showToast("Account registered successfully! Welcome to GlobeTrotter.", "success");
+      const res = await signup({ name, email, password }).unwrap();
+      showToast(`Account created successfully! Welcome ${res.user?.name}!`, "success");
       navigate("/dashboard");
     } catch (err: any) {
-      showToast(err?.data?.message || "Registration failed.", "error");
+      showToast(err?.data?.message || "Failed to register account.", "error");
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-2xl text-center mb-4">
-        <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Registration Screen (Screen 2)</h1>
-      </div>
-
-      <div className="sm:mx-auto sm:w-full sm:max-w-2xl">
-        <div className="bg-white py-10 px-8 shadow-xl border border-slate-200 rounded-3xl space-y-6">
-          <div className="flex flex-col items-center justify-center space-y-2">
-            <div className="w-24 h-24 rounded-full bg-slate-100 border-2 border-slate-300 flex items-center justify-center shadow-inner overflow-hidden">
-              <User className="w-12 h-12 text-slate-400" />
+    <div className="h-screen w-screen overflow-hidden bg-slate-50 flex">
+      {/* Left side: Register Form */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-between p-8 sm:p-12 lg:p-16 h-full overflow-y-auto">
+        <div>
+          <Link to="/" className="inline-flex items-center space-x-3 group">
+            <div className="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-600/30 group-hover:scale-105 transition-transform">
+              <Globe className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Photo</span>
+            <span className="text-xl font-black tracking-tight text-slate-900">
+              GlobeTrotter
+            </span>
+          </Link>
+        </div>
+
+        <div className="max-w-md w-full mx-auto space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Create your account
+            </h1>
+            <p className="text-xs font-semibold text-slate-500">
+              Fill in your details to get started with GlobeTrotter.
+            </p>
           </div>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  First Name
-                </label>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
+                Full Name
+              </label>
+              <div className="relative">
+                <UserIcon className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
                 <input
                   type="text"
                   required
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="First Name"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Last Name"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-slate-900 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 shadow-sm"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Email Address
-                </label>
+            <div>
+              <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
+                Email Address
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email Address"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Phone Number"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  City
-                </label>
-                <input
-                  type="text"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  placeholder="City"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Country
-                </label>
-                <input
-                  type="text"
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  placeholder="Country"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-slate-900 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 shadow-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
                 Password
               </label>
-              <input
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Set Password"
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
-              />
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-slate-900 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600 shadow-sm"
+                />
+              </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                Additional Information
-              </label>
-              <textarea
-                rows={3}
-                value={additionalInfo}
-                onChange={(e) => setAdditionalInfo(e.target.value)}
-                placeholder="Additional Information..."
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
-              />
-            </div>
-
-            <div className="pt-2 flex justify-center">
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-8 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm rounded-xl shadow-md transition-all disabled:opacity-50"
+                className="w-full py-3.5 px-4 bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-xs rounded-full shadow-lg shadow-blue-700/20 flex items-center justify-center space-x-2 transition-all hover:scale-[1.01]"
               >
-                {isLoading ? "Registering..." : "Register Users"}
+                <span>{isLoading ? "Registering..." : "Create Account"}</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </form>
+        </div>
 
-          <div className="text-center text-xs text-slate-500 pt-2">
-            Already registered?{" "}
-            <Link to="/login" className="font-bold text-indigo-600 hover:underline">
-              Sign in to account
-            </Link>
-          </div>
+        <div className="text-center sm:text-left text-xs font-bold text-slate-500">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 font-extrabold hover:underline">
+            Log in here
+          </Link>
+        </div>
+      </div>
+
+      {/* Right side: Cover Image */}
+      <div className="hidden lg:block lg:w-1/2 relative bg-slate-900 overflow-hidden h-full">
+        {coverImage && (
+          <img
+            src={coverImage}
+            alt="Travel Cover"
+            className="w-full h-full object-cover opacity-80"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+        <div className="absolute bottom-16 left-16 right-16 text-white space-y-4">
+          <span className="px-3.5 py-1 bg-white/10 backdrop-blur-md text-sky-300 rounded-full text-xs font-extrabold uppercase tracking-widest border border-white/20">
+            Start Your Journey
+          </span>
+          <h2 className="text-3xl font-black leading-tight">
+            "Every trip begins with a single step. Plan yours with intelligence."
+          </h2>
+          <p className="text-xs font-semibold text-slate-300">
+            Free forever account access to build, budget, and visualize your journeys.
+          </p>
         </div>
       </div>
     </div>

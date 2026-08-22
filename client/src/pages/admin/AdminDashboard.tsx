@@ -50,8 +50,8 @@ export const AdminDashboard: React.FC = () => {
           <span className="px-3 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full text-xs font-bold uppercase">
             Platform Analytics
           </span>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight mt-2">Admin Panel Screen (Screen 12)</h1>
-          <p className="text-slate-500 text-xs">Manage Users, Popular Cities, Popular Activities, User Trends and Analytics</p>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight mt-2">Admin Dashboard Panel</h1>
+          <p className="text-slate-500 text-xs">Manage Users, Popular Sacred Cities, Popular Activities, User Trends and Analytics</p>
         </div>
 
         {analyticsLoading ? (
@@ -117,16 +117,16 @@ export const AdminDashboard: React.FC = () => {
             </h2>
             <div className="space-y-3">
               <div className="flex items-center justify-between text-xs font-bold text-slate-700">
-                <span>Paris, France</span>
+                <span>Kedarnath, Uttarakhand</span>
+                <span className="text-indigo-600">4.98 Star Rating</span>
+              </div>
+              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                <span>Dwarka, Gujarat</span>
+                <span className="text-indigo-600">4.92 Star Rating</span>
+              </div>
+              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                <span>Ujjain, Madhya Pradesh</span>
                 <span className="text-indigo-600">4.9 Star Rating</span>
-              </div>
-              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
-                <span>Tokyo, Japan</span>
-                <span className="text-indigo-600">4.95 Star Rating</span>
-              </div>
-              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
-                <span>Rome, Italy</span>
-                <span className="text-indigo-600">4.85 Star Rating</span>
               </div>
             </div>
           </div>

@@ -8,7 +8,7 @@ export const Hero: React.FC = () => {
   const featuredCity = cities?.[0];
 
   return (
-    <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-gradient-to-b from-slate-50 via-slate-50 to-white relative overflow-hidden">
+    <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-linear-to-b from-slate-50 via-slate-50 to-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
@@ -54,15 +54,15 @@ export const Hero: React.FC = () => {
           </div>
 
           <div className="relative">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100 min-h-[400px]">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100 min-h-100">
               {featuredCity && (
                 <img
                   src={featuredCity.imageUrl}
                   alt={featuredCity.name}
-                  className="w-full h-[450px] object-cover"
+                  className="w-full h-112.5 object-cover"
                 />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-slate-900/40 via-transparent to-transparent" />
             </div>
 
             <div className="absolute -top-6 -left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-xl space-y-1 hidden sm:block">
@@ -70,7 +70,7 @@ export const Hero: React.FC = () => {
               <p className="text-[11px] text-slate-500 font-bold">10 Days • Sacred Yatra • ₹35,000 Estimated</p>
             </div>
 
-            <div className="absolute -bottom-6 -right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-xl flex items-center space-x-3 hidden sm:flex">
+            <div className="absolute -bottom-6 -right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-200 shadow-xl hidden items-center space-x-3 sm:flex">
               <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 font-black flex items-center justify-center text-sm border border-emerald-200">
                 ✓
               </div>

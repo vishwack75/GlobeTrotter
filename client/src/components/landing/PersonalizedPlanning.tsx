@@ -19,12 +19,12 @@ export const PersonalizedPlanning: React.FC = () => {
     <section className="py-20 bg-slate-50 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100 min-h-[350px]">
+          <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100 min-h-87.5">
             {cityImage && (
               <img
                 src={cityImage}
                 alt="Personalized Indian Travel"
-                className="w-full h-[400px] object-cover"
+                className="w-full h-100 object-cover"
               />
             )}
           </div>
