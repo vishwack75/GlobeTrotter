@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
-import { Plus, Trash2, Globe, Share2 } from "lucide-react";
+import { Plus, Trash2, Share2, Search, Calendar } from "lucide-react";
 import { useGetTripsQuery, useDeleteTripMutation } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
 
@@ -10,122 +10,148 @@ export const MyTrips: React.FC = () => {
   const { data: trips, isLoading } = useGetTripsQuery(undefined);
   const [deleteTrip] = useDeleteTripMutation();
   const { showToast } = useToast();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.preventDefault();
-    if (confirm("Are you sure you want to delete this trip?")) {
+    if (confirm("Delete this trip?")) {
       try {
         await deleteTrip(id).unwrap();
-        showToast("Trip deleted successfully.", "info");
+        showToast("Trip deleted.", "info");
       } catch (err: any) {
         showToast(err?.data?.message || "Failed to delete trip.", "error");
       }
     }
   };
 
+  const filteredTrips = trips?.filter((t: any) =>
+    t.name.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
+
+  const now = new Date();
+  const ongoingTrips = filteredTrips.filter((t: any) => new Date(t.startDate) <= now && new Date(t.endDate) >= now);
+  const upcomingTrips = filteredTrips.filter((t: any) => new Date(t.startDate) > now);
+  const completedTrips = filteredTrips.filter((t: any) => new Date(t.endDate) < now);
+
+  const renderTripCard = (trip: any) => (
+    <div
+      key={trip._id}
+      className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md hover:shadow-xl transition-all flex flex-col justify-between space-y-4 group"
+    >
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">
+            {trip.stops?.length || 0} Cities Scheduled
+          </span>
+          <div className="flex items-center space-x-1">
+            {trip.shareCode && (
+              <Link to={`/shared/${trip.shareCode}`} className="p-1 text-slate-400 hover:text-indigo-600">
+                <Share2 className="w-4 h-4" />
+              </Link>
+            )}
+            <button onClick={(e) => handleDelete(e, trip._id)} className="p-1 text-slate-400 hover:text-rose-600">
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        <Link to={`/trips/${trip._id}`}>
+          <h3 className="text-lg font-black text-slate-900 group-hover:text-indigo-600 transition-colors">
+            {trip.name}
+          </h3>
+        </Link>
+
+        <p className="text-xs text-slate-500 line-clamp-2">
+          Short Over View of the Trip: {trip.description || "No description provided."}
+        </p>
+      </div>
+
+      <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold">
+        <div className="flex items-center space-x-1.5">
+          <Calendar className="w-4 h-4 text-indigo-600" />
+          <span>{new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}</span>
+        </div>
+        <span className="font-extrabold text-slate-800">${trip.budgetLimit}</span>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-extrabold text-white">My Trips</h1>
-            <p className="text-slate-400 text-sm">Manage and track your travel itineraries</p>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">User Trip Listing (Screen 6)</h1>
+            <p className="text-slate-500 text-xs mt-1">Classified view of ongoing, upcoming, and past travel itineraries</p>
           </div>
           <Link
             to="/trips/create"
-            className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl flex items-center space-x-2 shadow-lg shadow-indigo-600/20"
+            className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold rounded-xl flex items-center space-x-2 shadow-md"
           >
             <Plus className="w-4 h-4" />
             <span>Create New Trip</span>
           </Link>
         </div>
 
-        {isLoading ? (
-          <div className="p-12 text-center text-slate-500">Loading trips...</div>
-        ) : trips && trips.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trips.map((trip: any) => (
-              <div
-                key={trip._id}
-                className="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden hover:border-slate-700 transition-all flex flex-col group"
-              >
-                <div className="h-48 relative bg-slate-900">
-                  <img
-                    src={trip.coverPhoto || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80"}
-                    alt={trip.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-                  <div className="absolute top-3 left-3 flex items-center space-x-2">
-                    {trip.isPublic ? (
-                      <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-semibold rounded-md flex items-center space-x-1">
-                        <Globe className="w-3 h-3" />
-                        <span>Public</span>
-                      </span>
-                    ) : (
-                      <span className="px-2.5 py-1 bg-slate-800/80 text-slate-400 text-xs font-medium rounded-md">
-                        Private
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <Link to={`/trips/${trip._id}`} className="block">
-                      <h3 className="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors">
-                        {trip.name}
-                      </h3>
-                    </Link>
-                    <p className="text-xs text-slate-400 line-clamp-2">
-                      {trip.description || "No detailed description provided."}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
-                    <div className="text-xs text-slate-400">
-                      <div>{new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}</div>
-                      <div className="font-semibold text-slate-200 mt-0.5">{trip.stops?.length || 0} Cities Scheduled</div>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                      {trip.shareCode && (
-                        <Link
-                          to={`/shared/${trip.shareCode}`}
-                          className="p-2 text-slate-400 hover:text-indigo-400 rounded-lg hover:bg-slate-900"
-                          title="Share Link"
-                        >
-                          <Share2 className="w-4 h-4" />
-                        </Link>
-                      )}
-                      <button
-                        onClick={(e) => handleDelete(e, trip._id)}
-                        className="p-2 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-slate-900"
-                        title="Delete Trip"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
+          <div className="relative flex-1 min-w-[240px]">
+            <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search bar ...."
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            />
           </div>
+
+          <div className="flex items-center space-x-2">
+            <button className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200">
+              Group by
+            </button>
+            <button className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200">
+              Filter
+            </button>
+            <button className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200">
+              Sort by...
+            </button>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div className="p-12 text-center text-slate-400">Loading trip listings...</div>
         ) : (
-          <div className="bg-slate-950 p-12 rounded-3xl border border-slate-800 text-center space-y-4">
-            <h3 className="text-lg font-bold text-white">No trips found</h3>
-            <p className="text-slate-400 text-sm max-w-md mx-auto">
-              Start building your multi-city travel plan by creating your first custom itinerary.
-            </p>
-            <Link
-              to="/trips/create"
-              className="inline-flex items-center space-x-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Create New Trip</span>
-            </Link>
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <h2 className="text-lg font-extrabold text-slate-900 border-b border-slate-200 pb-2">Ongoing</h2>
+              {ongoingTrips.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{ongoingTrips.map(renderTripCard)}</div>
+              ) : (
+                <p className="text-xs text-slate-400 italic">No ongoing trips currently active.</p>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              <h2 className="text-lg font-extrabold text-slate-900 border-b border-slate-200 pb-2">Up-coming</h2>
+              {upcomingTrips.length > 0 || filteredTrips.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {(upcomingTrips.length > 0 ? upcomingTrips : filteredTrips).map(renderTripCard)}
+                </div>
+              ) : (
+                <p className="text-xs text-slate-400 italic">No upcoming trips scheduled.</p>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              <h2 className="text-lg font-extrabold text-slate-900 border-b border-slate-200 pb-2">Completed</h2>
+              {completedTrips.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{completedTrips.map(renderTripCard)}</div>
+              ) : (
+                <p className="text-xs text-slate-400 italic">No completed historical trips recorded.</p>
+              )}
+            </div>
           </div>
         )}
       </main>

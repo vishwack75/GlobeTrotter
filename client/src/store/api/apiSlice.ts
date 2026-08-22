@@ -1,19 +1,42 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+let inMemoryAccessToken: string | null = null;
+
+export const setInMemoryAccessToken = (token: string | null) => {
+  inMemoryAccessToken = token;
+};
+
+export const getInMemoryAccessToken = () => inMemoryAccessToken;
+
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api",
   credentials: "include",
+  prepareHeaders: (headers) => {
+    if (inMemoryAccessToken) {
+      headers.set("Authorization", `Bearer ${inMemoryAccessToken}`);
+    }
+    return headers;
+  },
 });
 
 const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
-    const refreshResult: any = await baseQuery({ url: "/auth/refresh", method: "POST" }, api, extraOptions);
-    if (refreshResult.data) {
+  if (result.error && (result.error.status === 401 || result.error.status === 403)) {
+    const refreshResult: any = await baseQuery(
+      { url: "/auth/refresh", method: "POST" },
+      api,
+      extraOptions
+    );
+
+    if (refreshResult.data && refreshResult.data.accessToken) {
+      setInMemoryAccessToken(refreshResult.data.accessToken);
       result = await baseQuery(args, api, extraOptions);
+    } else {
+      setInMemoryAccessToken(null);
     }
   }
+
   return result;
 };
 
@@ -28,6 +51,14 @@ export const apiSlice = createApi({
         method: "POST",
         body: credentials,
       }),
+      async onQueryStarted(_args, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data?.accessToken) {
+            setInMemoryAccessToken(data.accessToken);
+          }
+        } catch {}
+      },
       invalidatesTags: ["Auth", "User", "Trip"],
     }),
     signup: builder.mutation({
@@ -36,6 +67,14 @@ export const apiSlice = createApi({
         method: "POST",
         body: credentials,
       }),
+      async onQueryStarted(_args, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data?.accessToken) {
+            setInMemoryAccessToken(data.accessToken);
+          }
+        } catch {}
+      },
       invalidatesTags: ["Auth", "User"],
     }),
     logout: builder.mutation({
@@ -43,6 +82,14 @@ export const apiSlice = createApi({
         url: "/auth/logout",
         method: "POST",
       }),
+      async onQueryStarted(_args, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          setInMemoryAccessToken(null);
+        } catch {
+          setInMemoryAccessToken(null);
+        }
+      },
       invalidatesTags: ["Auth", "User", "Trip", "Admin"],
     }),
     getProfile: builder.query({

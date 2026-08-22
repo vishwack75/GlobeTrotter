@@ -6,7 +6,7 @@ export class AuthController {
   static async signup(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await AuthService.signup(req.body);
-      sendAuthCookies(res, result.accessToken, result.refreshToken);
+      sendAuthCookies(res, result.refreshToken);
       res.status(201).json(result);
     } catch (err) {
       next(err);
@@ -16,7 +16,7 @@ export class AuthController {
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await AuthService.login(req.body);
-      sendAuthCookies(res, result.accessToken, result.refreshToken);
+      sendAuthCookies(res, result.refreshToken);
       res.json(result);
     } catch (err) {
       next(err);
@@ -27,7 +27,7 @@ export class AuthController {
     try {
       const incomingRefreshToken = req.cookies?.refreshToken || req.body?.refreshToken;
       const result = await AuthService.refreshTokens(incomingRefreshToken);
-      sendAuthCookies(res, result.accessToken, result.refreshToken);
+      sendAuthCookies(res, result.refreshToken);
       res.json(result);
     } catch (err) {
       clearAuthCookies(res);

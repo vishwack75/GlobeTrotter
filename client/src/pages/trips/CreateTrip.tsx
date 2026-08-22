@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 import { ArrowLeft } from "lucide-react";
-import { useCreateTripMutation } from "../../store/api/apiSlice";
+import { useCreateTripMutation, useGetCitiesQuery } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
 
 export const CreateTrip: React.FC = () => {
@@ -11,10 +11,11 @@ export const CreateTrip: React.FC = () => {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("2026-09-01");
   const [endDate, setEndDate] = useState("2026-09-10");
-  const [coverPhoto, setCoverPhoto] = useState("https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80");
-  const [budgetLimit, setBudgetLimit] = useState<number>(2000);
-  const [isPublic, setIsPublic] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState("");
+  const coverPhoto = "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80";
+  const budgetLimit = 2500;
 
+  const { data: cities } = useGetCitiesQuery(undefined);
   const [createTrip, { isLoading }] = useCreateTripMutation();
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -22,153 +23,167 @@ export const CreateTrip: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const tripName = name || `Trip to ${selectedPlace || "New Destination"}`;
       const result = await createTrip({
-        name,
+        name: tripName,
         description,
         startDate,
         endDate,
         coverPhoto,
         budgetLimit: Number(budgetLimit),
-        isPublic,
+        isPublic: true,
       }).unwrap();
 
-      showToast(`Trip '${name}' created successfully! Now add destination stops.`, "success");
+      showToast(`Trip '${tripName}' created!`, "success");
       navigate(`/trips/${result._id}`);
     } catch (err: any) {
-      showToast(err?.data?.message || "Failed to create trip. Please try again.", "error");
+      showToast(err?.data?.message || "Failed to create trip.", "error");
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
 
-      <main className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="inline-flex items-center space-x-2 text-xs font-semibold text-slate-400 hover:text-slate-200"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back</span>
-        </button>
+      <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center space-x-1.5 text-xs font-bold text-slate-500 hover:text-slate-900"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back</span>
+          </button>
+          <span className="text-xs font-extrabold text-slate-400 uppercase tracking-widest">
+            Create a new Trip (Screen 4)
+          </span>
+        </div>
 
-        <div className="bg-slate-950 p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+        <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-xl space-y-6">
           <div>
-            <h1 className="text-2xl font-extrabold text-white">Initiate New Trip</h1>
-            <p className="text-slate-400 text-xs mt-1">Setup basic travel dates, budget targets, and metadata.</p>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Plan a new trip</h1>
+            <p className="text-xs text-slate-500 mt-1">Specify schedule dates and destination preferences</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                Trip Name *
-              </label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Autumn in Japan & Korea"
-                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Trip Title
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Autumn Adventure"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                />
+              </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                Description
-              </label>
-              <textarea
-                rows={3}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Highlight key objectives, travel companions, or notes..."
-                className="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Select a Place :
+                </label>
+                <select
+                  value={selectedPlace}
+                  onChange={(e) => setSelectedPlace(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                >
+                  <option value="">Select Primary City</option>
+                  {cities?.map((c: any) => (
+                    <option key={c._id} value={c.name}>
+                      {c.name}, {c.country}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  Start Date *
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Start Date:
                 </label>
                 <input
                   type="date"
                   required
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 />
               </div>
+
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  End Date *
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  End Date:
                 </label>
                 <input
                   type="date"
                   required
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  Budget Limit ($)
-                </label>
-                <input
-                  type="number"
-                  min={0}
-                  value={budgetLimit}
-                  onChange={(e) => setBudgetLimit(Number(e.target.value))}
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  Cover Image URL
-                </label>
-                <input
-                  type="url"
-                  value={coverPhoto}
-                  onChange={(e) => setCoverPhoto(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3 pt-2">
-              <input
-                type="checkbox"
-                id="isPublic"
-                checked={isPublic}
-                onChange={(e) => setIsPublic(e.target.checked)}
-                className="w-4 h-4 rounded text-indigo-600 bg-slate-900 border-slate-800 focus:ring-indigo-500"
-              />
-              <label htmlFor="isPublic" className="text-xs text-slate-300 font-medium">
-                Make trip publicly viewable via shareable URL
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Trip Description & Notes
               </label>
+              <textarea
+                rows={3}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Trip highlights or companion notes..."
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              />
             </div>
 
-            <div className="pt-4 flex justify-end space-x-3">
+            <div className="pt-2 flex justify-end space-x-3">
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="px-5 py-2.5 text-xs font-semibold text-slate-400 hover:text-slate-200"
+                className="px-5 py-2.5 text-xs font-bold text-slate-500 hover:text-slate-800"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-50"
+                className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl shadow-md transition-all disabled:opacity-50"
               >
-                {isLoading ? "Saving..." : "Create Trip & Add Cities"}
+                {isLoading ? "Creating..." : "Save Trip & Continue"}
               </button>
             </div>
           </form>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-lg font-black text-slate-900 tracking-tight">
+            Suggestion for Places to Visit/Activities to perform
+          </h2>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+            {cities?.map((city: any) => (
+              <div
+                key={city._id}
+                onClick={() => setSelectedPlace(city.name)}
+                className={`bg-white rounded-2xl border p-3 shadow-sm hover:shadow-md cursor-pointer transition-all space-y-2 text-center ${
+                  selectedPlace === city.name ? "border-indigo-600 ring-2 ring-indigo-600/20" : "border-slate-200"
+                }`}
+              >
+                <div className="h-20 rounded-xl bg-slate-100 overflow-hidden">
+                  <img src={city.imageUrl} alt={city.name} className="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-800 text-xs truncate">{city.name}</h3>
+                  <p className="text-[10px] text-slate-500 truncate">{city.country}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </main>
 
