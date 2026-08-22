@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
+import PageLayout from "../../components/layout/PageLayout";
 import { Search, Star, Heart } from "lucide-react";
 import { useGetCitiesQuery, useToggleSaveDestinationMutation } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
@@ -25,10 +24,8 @@ export const CitySearchPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <PageLayout>
+      <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">City Search Page (Screen 8)</h1>
           <p className="text-slate-500 text-xs mt-1">Search, filter, and discover destination options and details</p>
@@ -42,7 +39,7 @@ export const CitySearchPage: React.FC = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search city, country or region..."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#02639B]"
             />
           </div>
 
@@ -104,10 +101,8 @@ export const CitySearchPage: React.FC = () => {
             <p className="text-xs text-slate-400">Try adjusting your search query or clear filters.</p>
           </div>
         )}
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

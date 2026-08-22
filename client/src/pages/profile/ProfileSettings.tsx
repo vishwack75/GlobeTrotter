@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
+import PageLayout from "../../components/layout/PageLayout";
 import { Save, User as UserIcon } from "lucide-react";
 import { useGetProfileQuery, useUpdateProfileMutation, useGetTripsQuery } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
@@ -39,10 +38,8 @@ export const ProfileSettings: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <Navbar />
-
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <PageLayout>
+      <div className="space-y-8">
         <div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">User Profile Pages (Screen 7)</h1>
           <p className="text-slate-500 text-xs mt-1">User Details with appropriate option to edit those information</p>
@@ -54,17 +51,17 @@ export const ProfileSettings: React.FC = () => {
               <img
                 src={avatarUrl}
                 alt={name}
-                className="w-24 h-24 rounded-full object-cover border-4 border-indigo-100 shadow-inner"
+                className="w-24 h-24 rounded-full object-cover border-4 border-sky-100 shadow-inner"
               />
             ) : (
-              <div className="w-24 h-24 rounded-full bg-indigo-50 border-4 border-indigo-100 flex items-center justify-center text-indigo-600">
+              <div className="w-24 h-24 rounded-full bg-sky-50 border-4 border-sky-100 flex items-center justify-center text-[#02639B]">
                 <UserIcon className="w-10 h-10" />
               </div>
             )}
             <div className="text-center sm:text-left space-y-1">
               <h2 className="text-2xl font-extrabold text-slate-900">{profile?.name}</h2>
               <p className="text-xs font-semibold text-slate-500">{profile?.email}</p>
-              <span className="inline-block px-2.5 py-0.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded text-[10px] font-bold uppercase">
+              <span className="inline-block px-2.5 py-0.5 bg-sky-50 text-[#02639B] border border-sky-200 rounded text-[10px] font-bold uppercase">
                 {profile?.role} Account
               </span>
             </div>
@@ -132,7 +129,7 @@ export const ProfileSettings: React.FC = () => {
               <button
                 type="submit"
                 disabled={updating}
-                className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl flex items-center space-x-2 shadow-md"
+                className="px-6 py-2.5 bg-[#02639B] hover:bg-[#024E7B] text-white font-extrabold text-xs rounded-xl flex items-center space-x-2 shadow-md"
               >
                 <Save className="w-4 h-4" />
                 <span>{updating ? "Saving..." : "Save Profile Details"}</span>
@@ -164,10 +161,8 @@ export const ProfileSettings: React.FC = () => {
             </div>
           )}
         </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

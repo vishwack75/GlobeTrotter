@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
+import PageLayout from "../../components/layout/PageLayout";
 import { Plus, Trash2, Share2, Search, Calendar } from "lucide-react";
 import { useGetTripsQuery, useDeleteTripMutation } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
@@ -43,12 +42,12 @@ export const MyTrips: React.FC = () => {
     >
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">
+          <span className="text-xs font-bold text-[#02639B] bg-sky-50 px-2.5 py-1 rounded-full border border-sky-100">
             {trip.stops?.length || 0} Cities Scheduled
           </span>
           <div className="flex items-center space-x-1">
             {trip.shareCode && (
-              <Link to={`/shared/${trip.shareCode}`} className="p-1 text-slate-400 hover:text-indigo-600">
+              <Link to={`/shared/${trip.shareCode}`} className="p-1 text-slate-400 hover:text-[#02639B]">
                 <Share2 className="w-4 h-4" />
               </Link>
             )}
@@ -59,7 +58,7 @@ export const MyTrips: React.FC = () => {
         </div>
 
         <Link to={`/trips/${trip._id}`}>
-          <h3 className="text-lg font-black text-slate-900 group-hover:text-indigo-600 transition-colors">
+          <h3 className="text-lg font-black text-slate-900 group-hover:text-[#02639B] transition-colors">
             {trip.name}
           </h3>
         </Link>
@@ -71,7 +70,7 @@ export const MyTrips: React.FC = () => {
 
       <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold">
         <div className="flex items-center space-x-1.5">
-          <Calendar className="w-4 h-4 text-indigo-600" />
+          <Calendar className="w-4 h-4 text-[#02639B]" />
           <span>{new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}</span>
         </div>
         <span className="font-extrabold text-slate-800">${trip.budgetLimit}</span>
@@ -80,10 +79,8 @@ export const MyTrips: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <PageLayout>
+      <div className="space-y-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-black text-slate-900 tracking-tight">User Trip Listing (Screen 6)</h1>
@@ -91,7 +88,7 @@ export const MyTrips: React.FC = () => {
           </div>
           <Link
             to="/trips/create"
-            className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold rounded-xl flex items-center space-x-2 shadow-md"
+            className="px-5 py-2.5 bg-[#02639B] hover:bg-[#024E7B] text-white text-xs font-extrabold rounded-full flex items-center space-x-2 shadow-md"
           >
             <Plus className="w-4 h-4" />
             <span>Create New Trip</span>
@@ -106,7 +103,7 @@ export const MyTrips: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search bar ...."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#02639B]"
             />
           </div>
 
@@ -157,10 +154,8 @@ export const MyTrips: React.FC = () => {
             </div>
           </div>
         )}
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

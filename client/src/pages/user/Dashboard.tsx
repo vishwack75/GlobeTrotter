@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
+import PageLayout from "../../components/layout/PageLayout";
 import { Plus, Search, Filter, ArrowUpDown, Calendar, Star } from "lucide-react";
 import { useGetTripsQuery, useGetCitiesQuery, useGetProfileQuery } from "../../store/api/apiSlice";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -22,14 +21,12 @@ export const Dashboard: React.FC = () => {
   const bannerCity = popularCities?.[0];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-900 text-white p-8 sm:p-12 shadow-2xl border border-indigo-800/40">
+    <PageLayout>
+      <div className="space-y-8">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-sky-900 via-slate-900 to-indigo-950 text-white p-8 sm:p-12 shadow-xl border border-sky-800/40">
           <div className="relative z-10 max-w-2xl space-y-4">
             <span className="px-3.5 py-1 bg-white/10 backdrop-blur-md text-sky-300 rounded-full text-xs font-extrabold uppercase tracking-widest border border-white/20">
-              Welcome Back, {profile?.name || "Traveler"}
+              Welcome Back, {profile?.name || "Explorer"}
             </span>
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
               Main Landing Page (Screen 3)
@@ -58,7 +55,7 @@ export const Dashboard: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search bar ...."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#02639B]"
             />
           </div>
 
@@ -80,7 +77,7 @@ export const Dashboard: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Top Regional Selections</h2>
-            <Link to="/explore/cities" className="text-xs font-bold text-indigo-600 hover:underline">Explore All</Link>
+            <Link to="/explore/cities" className="text-xs font-bold text-[#02639B] hover:underline">Explore All</Link>
           </div>
 
           {citiesLoading ? (
@@ -109,7 +106,7 @@ export const Dashboard: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Previous Trips & Active Plans</h2>
-            <Link to="/trips" className="text-xs font-bold text-indigo-600 hover:underline">View All Trips</Link>
+            <Link to="/trips" className="text-xs font-bold text-[#02639B] hover:underline">View All Trips</Link>
           </div>
 
           {tripsLoading || tripsFetching ? (
@@ -132,7 +129,7 @@ export const Dashboard: React.FC = () => {
                         />
                       </div>
                     )}
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#02639B] transition-colors">
                       {trip.name}
                     </h3>
                     <p className="text-xs text-slate-500 line-clamp-2">{trip.description || "No description provided."}</p>
@@ -140,7 +137,7 @@ export const Dashboard: React.FC = () => {
 
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
                     <div className="flex items-center space-x-1">
-                      <Calendar className="w-3.5 h-3.5 text-indigo-600" />
+                      <Calendar className="w-3.5 h-3.5 text-[#02639B]" />
                       <span>{new Date(trip.startDate).toLocaleDateString()}</span>
                     </div>
                     <span className="font-extrabold text-slate-800">${trip.budgetLimit}</span>
@@ -158,16 +155,14 @@ export const Dashboard: React.FC = () => {
         <div className="fixed bottom-6 right-6 z-40">
           <Link
             to="/trips/create"
-            className="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold rounded-full flex items-center space-x-2 text-sm shadow-2xl shadow-indigo-600/40 transition-all hover:scale-105"
+            className="px-6 py-3.5 bg-[#02639B] hover:bg-[#024E7B] text-white font-extrabold rounded-full flex items-center space-x-2 text-sm shadow-2xl shadow-sky-900/30 transition-all hover:scale-105"
           >
             <Plus className="w-5 h-5" />
             <span>+ Plan a trip</span>
           </Link>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

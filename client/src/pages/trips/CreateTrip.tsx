@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
+import PageLayout from "../../components/layout/PageLayout";
 import { Calendar, Plus, Compass } from "lucide-react";
 import { useCreateTripMutation, useGetCitiesQuery, useGetActivitiesQuery } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
@@ -45,10 +44,8 @@ export const CreateTrip: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <PageLayout>
+      <div className="space-y-8">
         <div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">Create Trip Screen (Screen 4)</h1>
           <p className="text-slate-500 text-xs mt-1">Plan a new trip by setting dates, budget, and discovering destinations</p>
@@ -71,7 +68,7 @@ export const CreateTrip: React.FC = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Royal Rajasthan Yatra 2026"
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-[#02639B] focus:outline-none"
                 />
               </div>
 
@@ -87,7 +84,7 @@ export const CreateTrip: React.FC = () => {
                       required
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-[#02639B] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -103,7 +100,7 @@ export const CreateTrip: React.FC = () => {
                       required
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-[#02639B] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -118,7 +115,7 @@ export const CreateTrip: React.FC = () => {
                     type="number"
                     value={budgetLimit}
                     onChange={(e) => setBudgetLimit(Number(e.target.value))}
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-[#02639B] focus:outline-none"
                   />
                 </div>
 
@@ -131,7 +128,7 @@ export const CreateTrip: React.FC = () => {
                     value={coverPhoto}
                     onChange={(e) => setCoverPhoto(e.target.value)}
                     placeholder="https://..."
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-[#02639B] focus:outline-none"
                   />
                 </div>
               </div>
@@ -145,7 +142,7 @@ export const CreateTrip: React.FC = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Notes, expectations, companion details..."
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs font-medium focus:ring-2 focus:ring-[#02639B] focus:outline-none"
                 />
               </div>
 
@@ -153,7 +150,7 @@ export const CreateTrip: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center justify-center space-x-2"
+                  className="w-full py-3 bg-[#02639B] hover:bg-[#024E7B] text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center justify-center space-x-2"
                 >
                   <Plus className="w-4 h-4" />
                   <span>{isLoading ? "Creating Plan..." : "Create Itinerary Plan"}</span>
@@ -165,7 +162,7 @@ export const CreateTrip: React.FC = () => {
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
               <h3 className="font-extrabold text-slate-900 text-base flex items-center space-x-2">
-                <Compass className="w-4 h-4 text-indigo-600" />
+                <Compass className="w-4 h-4 text-[#02639B]" />
                 <span>Suggestions for Places to Visit</span>
               </h3>
               <div className="grid grid-cols-2 gap-3">
@@ -193,10 +190,8 @@ export const CreateTrip: React.FC = () => {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

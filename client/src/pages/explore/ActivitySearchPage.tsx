@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
+import PageLayout from "../../components/layout/PageLayout";
 import { Search, Clock } from "lucide-react";
 import { useGetActivitiesQuery } from "../../store/api/apiSlice";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -13,10 +12,8 @@ export const ActivitySearchPage: React.FC = () => {
   const { data: activities, isLoading, isFetching } = useGetActivitiesQuery({ q: debouncedQuery });
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <PageLayout>
+      <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">Activity Search Page (Screen 8)</h1>
           <p className="text-slate-500 text-xs mt-1">Explore options and details for activities, tours, and sightseeing</p>
@@ -30,7 +27,7 @@ export const ActivitySearchPage: React.FC = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Paragliding, Food tour, Museum..."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#02639B]"
             />
           </div>
 
@@ -63,7 +60,7 @@ export const ActivitySearchPage: React.FC = () => {
                     <div className="space-y-1">
                       <div className="flex items-center space-x-2">
                         <h3 className="font-extrabold text-slate-900 text-lg">{act.title}</h3>
-                        <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold rounded">
+                        <span className="px-2 py-0.5 bg-sky-50 text-[#02639B] border border-sky-200 text-[10px] font-bold rounded">
                           {act.category}
                         </span>
                       </div>
@@ -73,7 +70,7 @@ export const ActivitySearchPage: React.FC = () => {
 
                   <div className="flex items-center space-x-4 text-xs shrink-0">
                     <div className="flex items-center space-x-1 text-slate-500 font-medium">
-                      <Clock className="w-4 h-4 text-indigo-600" />
+                      <Clock className="w-4 h-4 text-[#02639B]" />
                       <span>{act.duration} mins</span>
                     </div>
                     <span className="text-emerald-600 font-extrabold text-base">${act.cost}</span>
@@ -88,10 +85,8 @@ export const ActivitySearchPage: React.FC = () => {
             <p className="text-xs text-slate-400">Try searching for alternative keywords.</p>
           </div>
         )}
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 
