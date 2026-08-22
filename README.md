@@ -59,7 +59,7 @@ The mission is to build a user-centric, responsive application that simplifies t
 
 ### 7. City Search
 - **Problem**: Finding relevant destinations with pricing index and popularity data.
-- **GlobeTrotter Solution**: Real-time city search engine with region filters, star ratings, cost index indicators (`₹` to `₹₹₹`), and one-click "Add to Trip" actions.
+- **GlobeTrotter Solution**: Real-time city search engine with region filters, star ratings, cost index  and one-click "Add to Trip" actions.
 
 ### 8. Activity Search
 - **Problem**: Discovering memorable experiences (spiritual darshans, food tours, sightseeing) tailored to specific stops.
