@@ -2,9 +2,14 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser extends Document {
   name: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  phone: string;
+  city: string;
+  country: string;
   passwordHash: string;
-  avatarUrl?: string;
+  avatarUrl: string;
   role: "USER" | "ADMIN";
   language: string;
   refreshToken?: string | null;
@@ -15,9 +20,14 @@ export interface IUser extends Document {
 const UserSchema: Schema = new Schema(
   {
     name: { type: String, required: true, trim: true },
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    phone: { type: String, required: true, trim: true },
+    city: { type: String, required: true, trim: true },
+    country: { type: String, required: true, trim: true },
     passwordHash: { type: String, required: true },
-    avatarUrl: { type: String, default: null },
+    avatarUrl: { type: String, default: "" },
     role: { type: String, enum: ["USER", "ADMIN"], default: "USER" },
     language: { type: String, default: "en" },
     refreshToken: { type: String, default: null },
