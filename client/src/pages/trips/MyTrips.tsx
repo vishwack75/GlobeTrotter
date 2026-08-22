@@ -5,12 +5,15 @@ import Footer from "../../components/layout/Footer";
 import { Plus, Trash2, Share2, Search, Calendar } from "lucide-react";
 import { useGetTripsQuery, useDeleteTripMutation } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
+import { useDebounce } from "../../hooks/useDebounce";
+import { CardSkeleton } from "../../components/common/Skeleton";
 
 export const MyTrips: React.FC = () => {
-  const { data: trips, isLoading } = useGetTripsQuery(undefined);
+  const { data: trips, isLoading, isFetching } = useGetTripsQuery(undefined);
   const [deleteTrip] = useDeleteTripMutation();
   const { showToast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearch = useDebounce(searchQuery, 300);
 
   const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.preventDefault();
@@ -25,7 +28,7 @@ export const MyTrips: React.FC = () => {
   };
 
   const filteredTrips = trips?.filter((t: any) =>
-    t.name.toLowerCase().includes(searchQuery.toLowerCase())
+    t.name.toLowerCase().includes(debouncedSearch.toLowerCase())
   ) || [];
 
   const now = new Date();
@@ -120,8 +123,8 @@ export const MyTrips: React.FC = () => {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="p-12 text-center text-slate-400">Loading trip listings...</div>
+        {isLoading || isFetching ? (
+          <CardSkeleton count={3} />
         ) : (
           <div className="space-y-8">
             <div className="space-y-3">

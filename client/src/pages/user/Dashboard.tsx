@@ -4,16 +4,19 @@ import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 import { Plus, Search, Filter, ArrowUpDown, Calendar, Star } from "lucide-react";
 import { useGetTripsQuery, useGetCitiesQuery, useGetProfileQuery } from "../../store/api/apiSlice";
+import { useDebounce } from "../../hooks/useDebounce";
+import { CardSkeleton } from "../../components/common/Skeleton";
 
 export const Dashboard: React.FC = () => {
   const { data: profile } = useGetProfileQuery(undefined);
-  const { data: trips, isLoading: tripsLoading } = useGetTripsQuery(undefined);
+  const { data: trips, isLoading: tripsLoading, isFetching: tripsFetching } = useGetTripsQuery(undefined);
   const { data: popularCities, isLoading: citiesLoading } = useGetCitiesQuery({ limit: 5 });
 
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearch = useDebounce(searchQuery, 300);
 
   const filteredTrips = trips?.filter((t: any) =>
-    t.name.toLowerCase().includes(searchQuery.toLowerCase())
+    t.name.toLowerCase().includes(debouncedSearch.toLowerCase())
   );
 
   return (
@@ -105,8 +108,8 @@ export const Dashboard: React.FC = () => {
             <Link to="/trips" className="text-xs font-bold text-indigo-600 hover:underline">View All Trips</Link>
           </div>
 
-          {tripsLoading ? (
-            <div className="p-8 text-center text-slate-400">Loading trips...</div>
+          {tripsLoading || tripsFetching ? (
+            <CardSkeleton count={3} />
           ) : filteredTrips && filteredTrips.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {filteredTrips.map((trip: any) => (
@@ -141,7 +144,7 @@ export const Dashboard: React.FC = () => {
             </div>
           ) : (
             <div className="p-8 text-center bg-white rounded-3xl border border-slate-200 text-slate-500">
-              No trips created yet. Click below to start planning!
+              No trips matching search query found.
             </div>
           )}
         </div>

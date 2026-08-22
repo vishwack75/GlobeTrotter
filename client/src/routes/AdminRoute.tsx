@@ -7,17 +7,13 @@ export const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500">
-        <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center bg-slate-900 text-slate-400">
+        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
-  if (error || !profile) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (profile.role !== "ADMIN") {
+  if (error || !profile || profile.role !== "ADMIN") {
     return <Navigate to="/dashboard" replace />;
   }
 

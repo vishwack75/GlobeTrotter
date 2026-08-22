@@ -4,10 +4,14 @@ import Footer from "../../components/layout/Footer";
 import { Search, Star, Heart } from "lucide-react";
 import { useGetCitiesQuery, useToggleSaveDestinationMutation } from "../../store/api/apiSlice";
 import { useToast } from "../../components/common/ToastContext";
+import { useDebounce } from "../../hooks/useDebounce";
+import { ListSkeleton } from "../../components/common/Skeleton";
 
 export const CitySearchPage: React.FC = () => {
   const [query, setQuery] = useState("");
-  const { data: cities, isLoading } = useGetCitiesQuery({ q: query });
+  const debouncedQuery = useDebounce(query, 300);
+
+  const { data: cities, isLoading, isFetching } = useGetCitiesQuery({ q: debouncedQuery });
   const [toggleSave] = useToggleSaveDestinationMutation();
   const { showToast } = useToast();
 
@@ -55,14 +59,14 @@ export const CitySearchPage: React.FC = () => {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="p-12 text-center text-slate-400">Loading options...</div>
-        ) : (
+        {isLoading || isFetching ? (
+          <ListSkeleton count={4} />
+        ) : cities && cities.length > 0 ? (
           <div className="space-y-4">
-            <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Results</h2>
+            <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Results ({cities.length})</h2>
 
             <div className="space-y-4">
-              {cities?.map((city: any) => (
+              {cities.map((city: any) => (
                 <div key={city._id} className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md hover:shadow-lg transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 rounded-2xl bg-slate-100 overflow-hidden shrink-0">
@@ -93,6 +97,11 @@ export const CitySearchPage: React.FC = () => {
                 </div>
               ))}
             </div>
+          </div>
+        ) : (
+          <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 text-slate-500 space-y-2">
+            <h3 className="text-base font-bold text-slate-800">No destinations found</h3>
+            <p className="text-xs text-slate-400">Try adjusting your search query or clear filters.</p>
           </div>
         )}
       </main>

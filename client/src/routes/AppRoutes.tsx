@@ -21,7 +21,7 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 import CalendarView from "../pages/calendar/CalendarView";
 import CommunityFeed from "../pages/community/CommunityFeed";
 
-import UserRoute from "./UserRoute";
+import ProtectedRoute from "./ProtectedRoute";
 import AdminRoute from "./AdminRoute";
 
 export const AppRoutes: React.FC = () => {
@@ -35,33 +35,33 @@ export const AppRoutes: React.FC = () => {
       <Route
         path="/dashboard"
         element={
-          <UserRoute>
+          <ProtectedRoute>
             <Dashboard />
-          </UserRoute>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/trips"
         element={
-          <UserRoute>
+          <ProtectedRoute>
             <MyTrips />
-          </UserRoute>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/trips/create"
         element={
-          <UserRoute>
+          <ProtectedRoute>
             <CreateTrip />
-          </UserRoute>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/trips/:id"
         element={
-          <UserRoute>
+          <ProtectedRoute>
             <TripDetails />
-          </UserRoute>
+          </ProtectedRoute>
         }
       />
 
@@ -71,9 +71,9 @@ export const AppRoutes: React.FC = () => {
       <Route
         path="/calendar"
         element={
-          <UserRoute>
+          <ProtectedRoute>
             <CalendarView />
-          </UserRoute>
+          </ProtectedRoute>
         }
       />
       <Route path="/community" element={<CommunityFeed />} />
@@ -83,9 +83,9 @@ export const AppRoutes: React.FC = () => {
       <Route
         path="/profile"
         element={
-          <UserRoute>
+          <ProtectedRoute>
             <ProfileSettings />
-          </UserRoute>
+          </ProtectedRoute>
         }
       />
 

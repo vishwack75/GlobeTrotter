@@ -3,10 +3,14 @@ import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 import { Search, Clock } from "lucide-react";
 import { useGetActivitiesQuery } from "../../store/api/apiSlice";
+import { useDebounce } from "../../hooks/useDebounce";
+import { ListSkeleton } from "../../components/common/Skeleton";
 
 export const ActivitySearchPage: React.FC = () => {
   const [query, setQuery] = useState("");
-  const { data: activities, isLoading } = useGetActivitiesQuery({ q: query });
+  const debouncedQuery = useDebounce(query, 300);
+
+  const { data: activities, isLoading, isFetching } = useGetActivitiesQuery({ q: debouncedQuery });
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -43,14 +47,14 @@ export const ActivitySearchPage: React.FC = () => {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="p-12 text-center text-slate-400">Loading activity options...</div>
-        ) : (
+        {isLoading || isFetching ? (
+          <ListSkeleton count={4} />
+        ) : activities && activities.length > 0 ? (
           <div className="space-y-4">
-            <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Results</h2>
+            <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Results ({activities.length})</h2>
 
             <div className="space-y-4">
-              {activities?.map((act: any) => (
+              {activities.map((act: any) => (
                 <div key={act._id} className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md hover:shadow-lg transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 rounded-2xl bg-slate-100 overflow-hidden shrink-0">
@@ -77,6 +81,11 @@ export const ActivitySearchPage: React.FC = () => {
                 </div>
               ))}
             </div>
+          </div>
+        ) : (
+          <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 text-slate-500 space-y-2">
+            <h3 className="text-base font-bold text-slate-800">No activities found</h3>
+            <p className="text-xs text-slate-400">Try searching for alternative keywords.</p>
           </div>
         )}
       </main>
