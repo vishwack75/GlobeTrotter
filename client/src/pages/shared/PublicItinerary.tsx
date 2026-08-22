@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../components/layout/Navbar";
-import Footer from "../../components/layout/Footer";
 import { Copy, Calendar, MapPin } from "lucide-react";
 import { useGetPublicTripQuery, useCopyTripMutation } from "../../store/api/apiSlice";
 
@@ -31,7 +30,6 @@ export const PublicItinerary: React.FC = () => {
       <div className="min-h-screen bg-slate-900 flex flex-col">
         <Navbar />
         <div className="flex-1 flex items-center justify-center text-slate-400">Itinerary link not found or expired.</div>
-        <Footer />
       </div>
     );
   }
@@ -54,7 +52,7 @@ export const PublicItinerary: React.FC = () => {
             <button
               onClick={handleCopy}
               disabled={copying}
-              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl flex items-center space-x-2 shadow-lg shadow-indigo-600/30"
+              className="px-5 py-2.5 bg-[#02639B] hover:bg-[#024E7B] text-white font-semibold text-xs rounded-xl flex items-center space-x-2 shadow-lg shadow-sky-900/30 cursor-pointer"
             >
               <Copy className="w-4 h-4" />
               <span>{copying ? "Copying..." : "Copy Trip to My Profile"}</span>
@@ -65,7 +63,7 @@ export const PublicItinerary: React.FC = () => {
 
           <div className="pt-4 border-t border-slate-800 flex flex-wrap items-center gap-6 text-xs text-slate-400">
             <div className="flex items-center space-x-2">
-              <Calendar className="w-4 h-4 text-indigo-400" />
+              <Calendar className="w-4 h-4 text-[#02639B]" />
               <span>{new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}</span>
             </div>
             <div className="flex items-center space-x-2">
@@ -91,7 +89,7 @@ export const PublicItinerary: React.FC = () => {
                       <span className="font-semibold text-white">{act.activityId?.title || act.customTitle}</span>
                       {act.startTime && <span className="text-slate-400 ml-2">({act.startTime})</span>}
                     </div>
-                    <span className="font-bold text-emerald-400">${act.cost}</span>
+                    <span className="font-bold text-emerald-400">₹{act.cost}</span>
                   </div>
                 ))}
               </div>
@@ -99,8 +97,6 @@ export const PublicItinerary: React.FC = () => {
           ))}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

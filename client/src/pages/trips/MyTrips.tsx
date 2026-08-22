@@ -83,7 +83,7 @@ export const MyTrips: React.FC = () => {
       <div className="space-y-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">User Trip Listing (Screen 6)</h1>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">My Trips</h1>
             <p className="text-slate-500 text-xs mt-1">Classified view of ongoing, upcoming, and past travel itineraries</p>
           </div>
           <Link

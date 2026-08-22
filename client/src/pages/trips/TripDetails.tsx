@@ -79,7 +79,7 @@ export const TripDetails: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
             <div className="space-y-1">
               <span className="px-3 py-1 bg-sky-50 text-[#02639B] border border-sky-200 text-xs font-black rounded-full uppercase">
-                Trip Overview (Screen 4 & 5)
+                Trip Overview
               </span>
               <h1 className="text-3xl font-black text-slate-900 tracking-tight">{trip.name}</h1>
               <p className="text-xs text-slate-500 max-w-xl">{trip.description || "No description provided."}</p>

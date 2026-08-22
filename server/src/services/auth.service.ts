@@ -4,17 +4,36 @@ import jwt from "jsonwebtoken";
 import { generateAccessToken, generateRefreshToken } from "../utils/token";
 
 export class AuthService {
-  static async signup(data: { name: string; email: string; password: string; role?: "USER" | "ADMIN" }) {
+  static async signup(data: {
+    name?: string;
+    firstName?: string;
+    lastName?: string;
+    email: string;
+    phone?: string;
+    city?: string;
+    country?: string;
+    password: string;
+    avatarUrl?: string;
+    role?: "USER" | "ADMIN";
+  }) {
     const existing = await User.findOne({ email: data.email.toLowerCase() });
     if (existing) {
       throw { status: 400, message: "User with this email already exists" };
     }
 
+    const fullName = data.name || `${data.firstName || ''} ${data.lastName || ''}`.trim() || "User";
     const passwordHash = await bcrypt.hash(data.password, 10);
+    
     const user = new User({
-      name: data.name,
+      name: fullName,
+      firstName: data.firstName || "",
+      lastName: data.lastName || "",
       email: data.email,
+      phone: data.phone || "",
+      city: data.city || "",
+      country: data.country || "",
       passwordHash,
+      avatarUrl: data.avatarUrl || null,
       role: data.role || "USER",
     });
 
@@ -30,7 +49,12 @@ export class AuthService {
       user: {
         id: user._id.toString(),
         name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
+        phone: user.phone,
+        city: user.city,
+        country: user.country,
         avatarUrl: user.avatarUrl,
         role: user.role,
         language: user.language,
@@ -61,7 +85,12 @@ export class AuthService {
       user: {
         id: user._id.toString(),
         name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
+        phone: user.phone,
+        city: user.city,
+        country: user.country,
         avatarUrl: user.avatarUrl,
         role: user.role,
         language: user.language,
@@ -100,7 +129,12 @@ export class AuthService {
       user: {
         id: user._id.toString(),
         name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
+        phone: user.phone,
+        city: user.city,
+        country: user.country,
         avatarUrl: user.avatarUrl,
         role: user.role,
       },

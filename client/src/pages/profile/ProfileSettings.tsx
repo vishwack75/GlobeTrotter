@@ -41,8 +41,8 @@ export const ProfileSettings: React.FC = () => {
     <PageLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">User Profile Pages (Screen 7)</h1>
-          <p className="text-slate-500 text-xs mt-1">User Details with appropriate option to edit those information</p>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Profile Settings</h1>
+          <p className="text-slate-500 text-xs mt-1">User Details with option to edit profile information</p>
         </div>
 
         <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl space-y-6">

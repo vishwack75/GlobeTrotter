@@ -25,7 +25,7 @@ export const CitySearchPage: React.FC = () => {
 
   const getCostLabel = (costIndex?: number) => {
     const idx = costIndex && costIndex >= 1 ? Math.min(costIndex, 5) : 2;
-    const symbols = "$".repeat(idx);
+    const symbols = "₹".repeat(idx);
     const labels: Record<number, string> = {
       1: "Budget",
       2: "Moderate",
@@ -40,7 +40,7 @@ export const CitySearchPage: React.FC = () => {
     <PageLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">City Search Page (Screen 8)</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Explore Cities</h1>
           <p className="text-slate-500 text-xs mt-1">Search, filter, and discover destination options and details</p>
         </div>
 

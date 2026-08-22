@@ -121,7 +121,7 @@ export const apiSlice = createApi({
       providesTags: (_result, _error, id) => [{ type: "Trip", id }],
     }),
     getPublicTrip: builder.query({
-      query: (shareCode) => `/trips/public/${shareCode}`,
+      query: (shareCode) => `/trips/share/${shareCode}`,
     }),
     createTrip: builder.mutation({
       query: (data) => ({
@@ -129,7 +129,7 @@ export const apiSlice = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Trip"],
+      invalidatesTags: ["Trip", "User"],
     }),
     updateTrip: builder.mutation({
       query: ({ id, ...data }) => ({
@@ -137,40 +137,40 @@ export const apiSlice = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: (_result, _error, { id }) => [{ type: "Trip", id }, "Trip"],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Trip", id }],
     }),
     deleteTrip: builder.mutation({
       query: (id) => ({
         url: `/trips/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Trip"],
+      invalidatesTags: ["Trip", "User"],
     }),
     copyTrip: builder.mutation({
       query: (shareCode) => ({
-        url: `/trips/copy/${shareCode}`,
+        url: `/trips/share/${shareCode}/copy`,
         method: "POST",
       }),
       invalidatesTags: ["Trip"],
     }),
     addStop: builder.mutation({
-      query: (data) => ({
-        url: "/trips/stops",
+      query: ({ tripId, ...data }) => ({
+        url: `/trips/${tripId}/stops`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Trip"],
+      invalidatesTags: (_result, _error, { tripId }) => [{ type: "Trip", id: tripId }],
     }),
     deleteStop: builder.mutation({
-      query: (stopId) => ({
-        url: `/trips/stops/${stopId}`,
+      query: ({ tripId, stopId }) => ({
+        url: `/trips/${tripId}/stops/${stopId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Trip"],
+      invalidatesTags: (_result, _error, { tripId }) => [{ type: "Trip", id: tripId }],
     }),
     getCities: builder.query({
       query: (params) => ({
-        url: "/cities/search",
+        url: "/cities",
         params,
       }),
       providesTags: ["City"],
@@ -224,6 +224,22 @@ export const apiSlice = createApi({
       }),
       providesTags: ["Admin"],
     }),
+    getUserTrips: builder.query({
+      query: (userId) => `/admin/users/${userId}/trips`,
+      providesTags: ["Admin", "Trip"],
+    }),
+    getPopularCities: builder.query({
+      query: () => "/admin/popular-cities",
+      providesTags: ["Admin", "City"],
+    }),
+    getPopularActivities: builder.query({
+      query: () => "/admin/popular-activities",
+      providesTags: ["Admin", "Activity"],
+    }),
+    getUserTrends: builder.query({
+      query: () => "/admin/user-trends",
+      providesTags: ["Admin"],
+    }),
     updateUserRole: builder.mutation({
       query: ({ userId, role }) => ({
         url: `/admin/users/${userId}/role`,
@@ -267,6 +283,10 @@ export const {
   useUpdateBudgetCategoriesMutation,
   useGetAdminAnalyticsQuery,
   useGetAdminUsersQuery,
+  useGetUserTripsQuery,
+  useGetPopularCitiesQuery,
+  useGetPopularActivitiesQuery,
+  useGetUserTrendsQuery,
   useUpdateUserRoleMutation,
   useDeleteAdminUserMutation,
 } = apiSlice;
