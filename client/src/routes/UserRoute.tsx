@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useGetProfileQuery } from "../store/api/apiSlice";
 
-export const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const UserRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { data: profile, isLoading, error } = useGetProfileQuery(undefined);
 
   if (isLoading) {
@@ -17,11 +17,11 @@ export const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }
     return <Navigate to="/login" replace />;
   }
 
-  if (profile.role !== "ADMIN") {
-    return <Navigate to="/dashboard" replace />;
+  if (profile.role === "ADMIN") {
+    return <Navigate to="/admin" replace />;
   }
 
   return <>{children}</>;
 };
 
-export default AdminRoute;
+export default UserRoute;
